@@ -26,5 +26,20 @@ public class Pollutant {
     @Column(name = "MCL")
     Double MCL;
 
+    @Column(name = "Prob")
+    Double Prob;
+
+    @Column(name = "riskShort")
+    Double riskShort;
+
+    @Column(name = "kReserve")
+    Double kReserve;
+
+    @Column(name = "b")
+    Double b;
+
+    @Column(name = "riskLong")
+    Double riskLong;
+
 
 }

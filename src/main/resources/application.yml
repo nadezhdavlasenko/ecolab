@@ -1,0 +1,15 @@
+management:
+  security:
+    enabled: false
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+#        org.hibernate.dialect.MySQLDialect
+  datasource:
+    url: jdbc:mysql://localhost:3306/ecolab
+    username: root
+    password: sXG>lcli*8w<

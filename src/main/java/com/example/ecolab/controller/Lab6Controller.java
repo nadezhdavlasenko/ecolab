@@ -1,6 +1,6 @@
 package com.example.ecolab.controller;
 
-import com.example.ecolab.dto.CalculateLab6RequestDto;
+//import com.example.ecolab.dto.CalculateLab6RequestDto;
 import com.example.ecolab.dto.Lab6CalculationResultDto;
 import com.example.ecolab.service.Lab6Service;
 import lombok.extern.slf4j.Slf4j;

@@ -1,10 +1,9 @@
 package com.example.ecolab.service;
 
-import com.example.ecolab.dto.CalculateLab6RequestDto;
-import com.example.ecolab.dto.Lab6CalculationResultDto;
-import org.springframework.stereotype.Service;
+//import com.example.ecolab.dto.CalculateLab6RequestDto;
+import com.example.ecolab.entity.Pollutant;
 
 
 public interface Lab6Service {
-    Lab6CalculationResultDto calculate(Long pollutantId);
+    Pollutant calculate(Long pollutantId);
 }

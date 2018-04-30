@@ -2,6 +2,7 @@ package com.example.ecolab.controller;
 
 //import com.example.ecolab.dto.CalculateLab6RequestDto;
 import com.example.ecolab.dto.Lab6CalculationResultDto;
+import com.example.ecolab.entity.Pollutant;
 import com.example.ecolab.service.Lab6Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class Lab6Controller {
     }
 
     @GetMapping("/calculate")
-    public Lab6CalculationResultDto riskAssessment(Long pollutantId){
+    public Pollutant riskAssessment(Long pollutantId){
 
         return lab6Service.calculate(pollutantId);
     }

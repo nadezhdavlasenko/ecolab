@@ -27,6 +27,10 @@ CREATE TABLE IF NOT EXISTS `ecolab`.`pollutant` (
   `class` INT NULL,
   `averageConcentration` DOUBLE NULL,
   `MCL` DOUBLE NULL,
+  `Prob` DOUBLE NULL,
+  `riskShort` DOUBLE NULL,
+  `b` DOUBLE NULL,
+  `riskLong` DOUBLE NULL,
 
   PRIMARY KEY (`id`))
   ENGINE = InnoDB;

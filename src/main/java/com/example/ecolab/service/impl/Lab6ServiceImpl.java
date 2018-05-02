@@ -69,6 +69,6 @@ public class Lab6ServiceImpl implements Lab6Service {
 //        pollutant.getPollutantClass();
 
 
-        return null;
+        return pollutant;
     }
 }

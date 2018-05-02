@@ -1,4 +1,4 @@
-insert into ecolab.pollutant(name, class, averageConcentration, MCL) values
+insert into ecolab.pollutant(name, class, average_concentration, MCL) values
   ('Двооксид сірки', 4, 0.2, 0.5),
   ('Двооксид азоту', 4,2.2, 0.2),
   ('Оксид азоту', 4, 1, 0.4),

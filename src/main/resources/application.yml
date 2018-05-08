@@ -4,12 +4,16 @@ management:
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL57Dialect
+    show-sql: true
 #        org.hibernate.dialect.MySQLDialect
   datasource:
     url: jdbc:mysql://localhost:3306/ecolab
     username: root
     password: sXG>lcli*8w<
+logging:
+  level:
+    root: info

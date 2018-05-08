@@ -35,6 +35,32 @@ CREATE TABLE IF NOT EXISTS `ecolab`.`pollutant` (
   PRIMARY KEY (`id`))
   ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+
+DROP TABLE IF EXISTS `ecolab`.`waterobject` ;
+
+CREATE TABLE IF NOT EXISTS `ecolab`.`waterobject` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `lat` INT NULL,
+  `lon` INT NULL,
+  `ph` INT NULL,
+  `epid` DOUBLE NULL,
+  `naturColor` INT NULL,
+  `color` INT NULL,
+  `x1` INT NULL,
+  `x2` INT NULL,
+  `x3` INT NULL,
+  `waterProb` INT NULL,
+  `waterRisk` DOUBLE NULL,
+  `colorProb` DOUBLE NULL,
+  `colorRisk` DOUBLE NULL,
+  `rekrRisk` DOUBLE NULL,
+  `drinkRisk` DOUBLE NULL,
+
+  PRIMARY KEY (`id`))
+  ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

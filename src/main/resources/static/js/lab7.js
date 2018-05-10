@@ -33,28 +33,30 @@ $(document).ready(function() {
 
     $.when($.ajax('http://localhost:8080/waterobject')).done(function () {
 
-        var markers = [waterobjects.length];
-        var infowindows=[waterobjects.length];
+        var markers = [];
+        // var infowindows=[waterobjects.length];
+        //
+        // for (var i = 0; i < waterobjects.length; i++) {
+        //
+        //     var marker = new google.maps.Marker({
+        //         position: new google.maps.LatLng(waterobjects[i]['lat'], waterobjects[i]['lon']),
+        //         map: map,
+        //         title: waterobjects[i]['name']
+        //     });
+        //
+        //     // infowindows[i] = new google.maps.InfoWindow({
+        //     // });
+        //
+        //     markers[i] = marker;
+        //
+        //
+        // }
 
-        for (var i = 0; i < waterobjects.length; i++) {
-
-            var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(waterobjects[i]['lat'], waterobjects[i]['lon']),
-                map: map,
-                title: waterobjects[i]['name']
-            });
-
-            infowindows[i] = new google.maps.InfoWindow({
-            });
-
-            markers[i] = marker;
-        }
-
-        markers.forEach(function (item, i) {
-            item.addListener('click', function() {
-            infowindows[i].open(map, markers[i]);
-        });
-        });
+        // markers.forEach(function (item, i) {
+        //     item.addListener('click', function() {
+        //     infowindows[i].open(map, markers[i]);
+        // });
+        // });
 
 
 
@@ -141,9 +143,11 @@ $(document).ready(function() {
 
 
                         for (var i = 0; i < waterobjects.length; i++) {
-                            if (waterobjects[i]['name'] === waterobject) waterobjectId = waterobjects[i]['id'];
-                            if (waterobjects[i]['lat'] === waterobject) lat = waterobjects[i]['lat'];
-                            if (waterobjects[i]['lon'] === waterobject) lon = waterobjects[i]['lon'];
+                            if (waterobjects[i]['name'] === waterobject) {
+                                waterobjectId = waterobjects[i]['id'];
+                                lat = waterobjects[i]['lat'];
+                                lon = waterobjects[i]['lon'];
+                            }
 
 
                         }
@@ -194,7 +198,19 @@ $(document).ready(function() {
                                  infowindow = new google.maps.InfoWindow({
                                     content: startString + contentString + addString + '</table>'
                                 });
-                                 infowindows[response['id']] = infowindow;
+                                // infowindows[response['id']] = infowindow;
+
+                                var marker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(lat,lon),
+                                    map: map,
+                                    title: response['name']
+                                });
+
+                                marker.addListener('click', function() {
+                                    infowindow.open(map, marker);
+                                });
+
+                                markers.push(marker);
 
 
 

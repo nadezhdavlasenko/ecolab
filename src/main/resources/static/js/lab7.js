@@ -27,29 +27,32 @@ $(document).ready(function() {
     var heatmapData = [];
     var heatmap;
     var infowindow;
-    var contentString = '<h1 id="firstHeading" class="firstHeading">Запорiжжя</h1>'+
-                        '<table><tr><td>Речовина</td><td>Risk негайний</td><td>Risk хронiчний</td></tr>';
+    var contentString = '<table>'+'<tr><td>Risk(рекреационное исп-е)</td><td>Risk(питьевая вода)</td></tr>';
 
 
 
     $.when($.ajax('http://localhost:8080/waterobject')).done(function () {
 
-        var markers = [];
+        var markers = [waterobjects.length];
+        var infowindows=[waterobjects.length];
 
         for (var i = 0; i < waterobjects.length; i++) {
 
             var marker = new google.maps.Marker({
                 position: new google.maps.LatLng(waterobjects[i]['lat'], waterobjects[i]['lon']),
                 map: map,
-                title: 'Uluru (Ayers Rock)'
+                title: waterobjects[i]['name']
             });
 
-            markers.push(marker)
+            infowindows[i] = new google.maps.InfoWindow({
+            });
+
+            markers[i] = marker;
         }
 
         markers.forEach(function (item, i) {
             item.addListener('click', function() {
-            infowindow.open(map, markers[i]);
+            infowindows[i].open(map, markers[i]);
         });
         });
 
@@ -127,7 +130,11 @@ $(document).ready(function() {
                     if (waterobject !== "" && ph !== ""
                         && epid !== "" && naturColor !== ""
                         && color !== "" && x1 !== ""
-                        && x2 !== "" && x3 !== ""){
+                        && x2 !== "" && x3 !== "" &&
+                        waterobject !== null && ph !== null
+                        && epid !== null && naturColor !== null
+                        && color !== null && x1 !== null
+                        && x2 !== null && x3 !== null){
                         var waterobjectId;
                         var lat;
                         var lon;
@@ -175,16 +182,19 @@ $(document).ready(function() {
                                 riskHot.setDataAtCell(currentRow, 11, response['colorRisk']);
                                 riskHot.setDataAtCell(currentRow, 12, response['rekrRisk']);
                                 riskHot.setDataAtCell(currentRow, 13, response['drinkRisk']);
+                                var startString = '<h1 id="firstHeading" class="firstHeading">'+response['name']+'</h1>';
 
                                  var addString =
+
                                      '<tr>'+
-                                     '<td>'+response['name']+'</td>'+ '<td>'+response['rekrRisk']+'</td>'+ '<td>'+response['drinkRisk']+'</td>'+
+                                     '<td>'+response['rekrRisk']+'</td>'+ '<td>'+response['drinkRisk']+'</td>'+
                                      '</tr>';
-                                 contentString = contentString + addString;
+                                 //contentString = startString + contentString + addString;
 
                                  infowindow = new google.maps.InfoWindow({
-                                    content: contentString + '</table>'
+                                    content: startString + contentString + addString + '</table>'
                                 });
+                                 infowindows[response['id']] = infowindow;
 
 
 
@@ -206,8 +216,8 @@ $(document).ready(function() {
 var map;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 6,
-        center: {lat: 48.865427, lng: 34.196123},
+        zoom: 9,
+        center: {lat: 47.5, lng: 34.5}
     });
 
 

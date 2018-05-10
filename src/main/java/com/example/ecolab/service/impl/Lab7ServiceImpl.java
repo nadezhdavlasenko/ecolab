@@ -40,7 +40,7 @@ public class Lab7ServiceImpl implements Lab7Service {
 
         }
             if (waterObject.getWaterProb() >= -2 && waterObject.getWaterProb() <= 2) {
-                waterObject.setWaterRisk(ProbRiskShort.map.get(waterObject.getWaterProb()));
+                waterObject.setWaterRisk(ProbRiskShort.map.get((double)waterObject.getWaterProb()));
             } else if (waterObject.getWaterProb() < -2 && waterObject.getWaterProb() >= -2.5) {
                 waterObject.setWaterRisk(0.006);
             } else if (waterObject.getWaterProb() < -2.5 && waterObject.getWaterProb() >= -3) {
@@ -56,7 +56,7 @@ public class Lab7ServiceImpl implements Lab7Service {
             }
 
 
-            waterObject.setColorProb(-3.33 + 0.067 * (waterObject.getColor() - waterObject.getNaturColor() + 20));
+            waterObject.setColorProb(DoubleRounder.round((-3.33 + 0.067 * (waterObject.getColor() - waterObject.getNaturColor() + 20)),1));
 
         if (waterObject.getColorProb() >= -2 && waterObject.getColorProb() <= 2) {
             waterObject.setColorRisk(ProbRiskShort.map.get(waterObject.getColorProb()));

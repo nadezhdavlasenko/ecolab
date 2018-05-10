@@ -1,10 +1,14 @@
 $(document).ready(function() {
 
-    var pollutants;
+    var waterobjects;
+
+
+
+
 
 
     $.ajax({
-        url: "http://localhost:8080/pollutant",
+        url: "http://localhost:8080/waterobject",
         type: "GET",
         dataType: "json",
         error: function (response) {
@@ -12,7 +16,8 @@ $(document).ready(function() {
         },
         success: function (response) {
             console.log(response[1]['name']);
-            pollutants = response;
+            waterobjects = response;
+
         }
     });
 
@@ -24,14 +29,31 @@ $(document).ready(function() {
     var infowindow;
     var contentString = '<h1 id="firstHeading" class="firstHeading">Запорiжжя</h1>'+
                         '<table><tr><td>Речовина</td><td>Risk негайний</td><td>Risk хронiчний</td></tr>';
-    var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(47,35),
-        map: map,
-        title: 'Uluru (Ayers Rock)'
-    });
 
 
-    $.when($.ajax('http://localhost:8080/pollutant')).done(function () {
+
+    $.when($.ajax('http://localhost:8080/waterobject')).done(function () {
+
+        var markers = [];
+
+        for (var i = 0; i < waterobjects.length; i++) {
+
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(waterobjects[i]['lat'], waterobjects[i]['lon']),
+                map: map,
+                title: 'Uluru (Ayers Rock)'
+            });
+
+            markers.push(marker)
+        }
+
+        markers.forEach(function (item, i) {
+            item.addListener('click', function() {
+            infowindow.open(map, markers[i]);
+        });
+        });
+
+
 
 
         console.log("Loaded!");
@@ -44,17 +66,21 @@ $(document).ready(function() {
             columns: [
                 {
                     type: 'dropdown',
-                    source: pollutants.map(function(value,index) { return value['name']; })
+                    source: waterobjects.map(function(value,index) { return value['name']; })
 
                 },
                 {
-
+                    //data: ["1", "2", "3"]
+                    // data: waterobjects.map(function(value,index) { return value['ph']; })
                 },
                 {},
                 {
 
                 },
                 {},
+                {},
+                {},
+                {},
                 {
                     editor: false
                 },
@@ -66,7 +92,9 @@ $(document).ready(function() {
                 },
                 {
                     editor: false
-                }
+                },
+                {},
+                {}
             ],
             filters: false,
             dropdownMenu: true,
@@ -74,7 +102,7 @@ $(document).ready(function() {
             afterChange: function (changes, source) {
                 if (arguments[1] !== "loadData") {
 
-                    if (!changes || changes[0][1] > 0) {
+                    if (!changes || changes[0][1] > 7) {
                         return;
                     }
 
@@ -87,26 +115,53 @@ $(document).ready(function() {
                     var currentRow = changedRow;
 
 
-                    var pollutant = riskHot.getDataAtCell(currentRow, 0);
+                    var waterobject = riskHot.getDataAtCell(currentRow, 0);
+                    var ph = riskHot.getDataAtCell(currentRow, 1);
+                    var epid = riskHot.getDataAtCell(currentRow, 2);
+                    var naturColor = riskHot.getDataAtCell(currentRow, 3);
+                    var color = riskHot.getDataAtCell(currentRow, 4);
+                    var x1 = riskHot.getDataAtCell(currentRow, 5);
+                    var x2 = riskHot.getDataAtCell(currentRow, 6);
+                    var x3 = riskHot.getDataAtCell(currentRow, 7);
 
-                    if (pollutant !== null){
-                        var pollutantId;
+                    if (waterobject !== "" && ph !== ""
+                        && epid !== "" && naturColor !== ""
+                        && color !== "" && x1 !== ""
+                        && x2 !== "" && x3 !== ""){
+                        var waterobjectId;
+                        var lat;
+                        var lon;
 
 
-                        for (var i = 0; i < pollutants.length; i++) {
-                            if (pollutants[i]['name'] == pollutant) pollutantId = pollutants[i]['id'];
+                        for (var i = 0; i < waterobjects.length; i++) {
+                            if (waterobjects[i]['name'] === waterobject) waterobjectId = waterobjects[i]['id'];
+                            if (waterobjects[i]['lat'] === waterobject) lat = waterobjects[i]['lat'];
+                            if (waterobjects[i]['lon'] === waterobject) lon = waterobjects[i]['lon'];
+
 
                         }
 
-                        console.log("pollutantId:" + pollutantId);
+                        var object = {id:waterobjectId,name: waterobject, lat:lat , lon:lon, ph:ph, epid:epid, naturColor:naturColor, color:color, x1:x1, x2:x2, x3:x3};
+
+                        console.log("waterobjectId:" + waterobjectId);
 
                         $.ajax({
-                            url: "http://localhost:8080/lab6/calculate",
-                            type: "GET",
-                            data: {
-                                pollutantId: pollutantId
+                            url: "http://localhost:8080/waterobject/update",
+                            type: "POST",
+                            data: JSON.stringify(object),
+                             dataType: "json",
+                            contentType: "application/json; charset=utf-8",
 
+                            error: function (response) {
+                                alert(response.responseText);
                             },
+                            success: function (response) {
+
+
+                        $.ajax({
+                            url: "http://localhost:8080/lab7/calculate",
+                            type: "GET",
+                            data: {id: waterobjectId},
                             // dataType: "json",
                             error: function (response) {
                                 alert(response.responseText);
@@ -114,27 +169,29 @@ $(document).ready(function() {
                             success: function (response) {
                                 console.log(response);
                                 //riskCalculationResultData = response;
-                                riskHot.setDataAtCell(currentRow, 3, response['pollutantClass']);
-                                riskHot.setDataAtCell(currentRow, 1, response['averageConcentration']);
-                                riskHot.setDataAtCell(currentRow, 5, response['riskShort']);
-                                riskHot.setDataAtCell(currentRow, 7, response['b']);
-                                riskHot.setDataAtCell(currentRow, 8, response['riskLong']);
-                                riskHot.setDataAtCell(currentRow, 2, response['mcl']);
-                                riskHot.setDataAtCell(currentRow, 4, response['prob']);
-                                riskHot.setDataAtCell(currentRow, 6, response['kreserve']);
+                                riskHot.setDataAtCell(currentRow, 8, response['waterProb']);
+                                riskHot.setDataAtCell(currentRow, 9, response['waterRisk']);
+                                riskHot.setDataAtCell(currentRow, 10, response['colorProb']);
+                                riskHot.setDataAtCell(currentRow, 11, response['colorRisk']);
+                                riskHot.setDataAtCell(currentRow, 12, response['rekrRisk']);
+                                riskHot.setDataAtCell(currentRow, 13, response['drinkRisk']);
 
                                  var addString =
                                      '<tr>'+
-                                     '<td>'+response['name']+'</td>'+ '<td>'+response['riskShort']+'</td>'+ '<td>'+response['riskLong']+'</td>'+
+                                     '<td>'+response['name']+'</td>'+ '<td>'+response['rekrRisk']+'</td>'+ '<td>'+response['drinkRisk']+'</td>'+
                                      '</tr>';
                                  contentString = contentString + addString;
 
                                  infowindow = new google.maps.InfoWindow({
                                     content: contentString + '</table>'
                                 });
-                                marker.addListener('click', function() {
-                                    infowindow.open(map, marker);
-                                });
+
+
+
+
+                            }
+                        });
+
 
                             }
                         });

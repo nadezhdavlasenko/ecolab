@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class Lab7Controller {
     private final Lab7Service lab7Service;
     @Autowired
-    public Lab7Controller(Lab7Service lab6Service){
-        this.lab7Service = lab6Service;
+    public Lab7Controller(Lab7Service lab7Service){
+        this.lab7Service = lab7Service;
     }
 
     @GetMapping("/calculate")

@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "Waterobject")
+@Table(name = "waterobject")
 public class WaterObject {
 
     @Id
@@ -18,10 +18,10 @@ public class WaterObject {
     String name;
 
     @Column(name = "lat")
-    Integer lat;
+    Double lat;
 
     @Column(name = "lon")
-    Integer lon;
+    Double lon;
 
     @Column(name = "ph")
     Integer ph;

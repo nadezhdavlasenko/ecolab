@@ -25,4 +25,20 @@ public class WaterObjectServiceImpl implements WaterObjectService {
         waterObjectRepository.findAll().forEach(waterObjectList::add);
         return waterObjectList;
     }
+
+    @Override
+    public WaterObject getOne(Long id) {
+        WaterObject waterObject = new WaterObject();
+        try {
+            waterObject = waterObjectRepository.findById(id).orElseThrow(Exception::new);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return waterObject;
+    }
+
+    @Override
+    public void save(WaterObject waterObject) {
+        waterObjectRepository.save(waterObject);
+    }
 }

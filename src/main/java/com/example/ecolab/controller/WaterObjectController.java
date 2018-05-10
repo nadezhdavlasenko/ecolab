@@ -4,11 +4,11 @@ import com.example.ecolab.entity.WaterObject;
 import com.example.ecolab.service.WaterObjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -25,5 +25,20 @@ public class WaterObjectController {
     @GetMapping
     public List<WaterObject> waterObject(){
         return waterObjectService.getAll();
+    }
+
+    @PostMapping(value = "/update")
+    public WaterObject update(@RequestBody WaterObject waterObject){
+      //  WaterObject waterObject = waterObjectService.getOne(id);
+
+//        if (!waterObject.isPresent())
+//            return ResponseEntity.notFound().build();
+
+       // waterObject.setId(id);
+
+        waterObjectService.save(waterObject);
+
+//        return ResponseEntity.noContent().build();
+        return waterObject;
     }
 }
